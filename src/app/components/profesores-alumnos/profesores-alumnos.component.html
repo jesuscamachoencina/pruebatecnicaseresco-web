@@ -1,0 +1,38 @@
+<h1>Gestión de Profesores</h1>
+
+<p-table [value]="listaRelacion" dataKey="profesor.id" responsiveLayout="scroll">
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 3rem"></th>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Materia</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-relacion let-expanded="expanded" let-ri="rowIndex">
+    <tr>
+      <td>
+          <button type="button" pButton pRipple [pRowToggler]="relacion" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" (click)="cargarAlumnos(ri)"></button>
+      </td>
+      <td>{{relacion.profesor.id}}</td>
+      <td>{{relacion.profesor.nombre}}</td>
+      <td>{{relacion.profesor.apellido}}</td>
+      <td>{{relacion.profesor.materia}}</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="rowexpansion" let-relacion>
+    <tr>
+        <td colspan="5">
+            <p-pickList [source]="listaAlumnosNoAsignados[buscarIndice(relacion)]" [target]="listaAlumnosAsignados[buscarIndice(relacion)]" [showSourceControls]="false" [showSourceFilter]="false" [showTargetFilter]="false" [showTargetControls]="false"
+              (onMoveToSource)="deleteRelacion($event.items, relacion)" (onMoveAllToSource)="deleteRelacion($event.items, relacion)" (onMoveToTarget)="saveRelacion($event.items, relacion)" (onMoveAllToTarget)="saveRelacion($event.items, relacion)">
+              <ng-template let-alumno pTemplate="item">
+                  <div>
+                      {{alumno.nombre}} {{alumno.apellido}} - {{alumno.curso}}
+                  </div>
+              </ng-template>
+            </p-pickList>
+        </td>
+    </tr>
+</ng-template>
+</p-table>

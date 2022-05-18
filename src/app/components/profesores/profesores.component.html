@@ -1,0 +1,50 @@
+<h1>Gestión de Profesores</h1>
+
+<p-table [value]="listaProfesores" responsiveLayout="scroll">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Materia</th>
+      <th style="text-align: center">Acciones</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-profesor>
+    <tr>
+      <td>{{profesor.id}}</td>
+      <td>{{profesor.nombre}}</td>
+      <td>{{profesor.apellido}}</td>
+      <td>{{profesor.materia}}</td>
+      <td style="text-align: center">
+          <button *ngIf="!isNuevoProfesor" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-info p-button-outlined" (click)="editarProfesor(profesor)"></button>
+          <button *ngIf="!isNuevoProfesor" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-outlined" (click)="eliminarProfesor(profesor.id)"></button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <tr *ngIf="isNuevoProfesor">
+      <td>{{nuevoProfesor.id}}</td>
+      <td><input type="text" pInputText [(ngModel)]="nuevoProfesor.nombre"></td>
+      <td><input type="text" pInputText [(ngModel)]="nuevoProfesor.apellido"></td>
+      <td><input type="text" pInputText [(ngModel)]="nuevoProfesor.materia"></td>
+      <td style="text-align: center">
+          <button pButton pRipple type="button" icon="pi pi-save" class="p-button-rounded p-button-success p-button-outlined" (click)="guardarProfesor()"></button>
+          <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-outlined" (click)="limpiarNuevo()"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<div *ngIf="!isNuevoProfesor" class="botonera">
+  <button pButton pRipple type="button" icon="pi pi-plus" label="Añadir profesor" class="p-button-secondary p-button-text" (click)="isNuevoProfesor = true"></button>
+  <button pButton pRipple type="button" icon="pi pi-refresh" label="Recargar Datos" class="p-button-secondary p-button-text" (click)="recargarDatos()"></button>
+</div>
+
+<p-dialog header="Confirmación" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+    <p class="m-0">¿Está seguro de que quiere eliminar el alumno de la lista?</p>
+    <ng-template pTemplate="footer">
+      <p-button (click)="cancelarEliminar()" label="Cancelar" styleClass="p-button-text p-button-info"></p-button>
+      <p-button (click)="confirmarEliminar()" label="Sí" styleClass="p-button-text p-button-danger"></p-button>
+    </ng-template>
+</p-dialog>
